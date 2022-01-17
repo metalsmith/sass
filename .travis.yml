@@ -2,7 +2,7 @@ language: node_js
 dist: xenial
 
 node_js:
-  - 8
+  - 10
   - 12
   - 14
   - 16
@@ -25,7 +25,7 @@ jobs:
       script: npm run lint
     - stage: test_windows
       name: Oldest supported version on Windows
-      node_js: 8
+      node_js: 10
       os: windows
     - stage: codecov
       name: Coveralls

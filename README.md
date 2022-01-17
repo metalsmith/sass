@@ -28,7 +28,9 @@ Pass `@metalsmith/sass` to `metalsmith.use` :
 ```js
 const sass = require('@metalsmith/sass')
 
-metalsmith.use(sass()) // defaults
+metalsmith.use(sass({ entries: {
+    // 'src.scss': 'destination.css'
+}})) // defaults
 metalsmith.use(sass({  // explicit defaults
   style: process.env.NODE_ENV === 'development' ? 'expanded' : 'compressed',
   sourceMap: process.env.NODE_ENV === 'development',
@@ -68,12 +70,12 @@ With this setup metalsmith will generate the following build:
 ```plaintext
 build
   ├── css
-  │   ├── styles.css
-  │   └── styles.css
+  │   ├── blogpost.css
+  │   └── main.css
   ├── blog.html
   └── index.html
 ```
-You could also put the SCSS source files inside `Metalsmith.source` if you prefer (they will be converted and the source .scss files removed), but note that this will make metalsmith read all the SCSS files in memory and is only interesting if you need to apply other plugins to the files before `@metalsmith/sass` runs.
+You could also put the SCSS source files inside `Metalsmith.source` if you prefer (they will be converted and the source .scss files removed), but note that this will make metalsmith read all the SCSS files in memory and is only interesting if you need to read metadata from/ apply other plugins to the files before `@metalsmith/sass` runs.
 
 ### Debug
 
@@ -112,7 +114,7 @@ To use this plugin with the Metalsmith CLI, add `@metalsmith/sass` to the `plugi
 
 ## Node compatibility
 
-This plugin runs on Node >= 8.9.0 
+This plugin runs on Node >= 10. If you need to compile sass/scss on earier Node versions, use the [metalsmith-sass](https://github.com/stevenschobert/metalsmith-sass) which uses the (no longer canonical) lib-sass.
 
 ## License
 
