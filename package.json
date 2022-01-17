@@ -1,10 +1,11 @@
 {
-  "name": "@metalsmith/~core-plugin~",
-  "private": true,
+  "name": "@metalsmith/sass",
   "version": "0.1.0",
-  "description": "A Metalsmith plugin to ...",
+  "description": "A Metalsmith plugin to compile SASS/SCSS files",
   "keywords": [
-    "~core-plugin~",
+    "sass",
+    "scss",
+    "styling",
     "metalsmith-plugin",
     "metalsmith",
     "static-site"
@@ -12,7 +13,7 @@
   "main": "lib/index.js",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/metalsmith/~core-plugin~.git"
+    "url": "git+https://github.com/metalsmith/sass.git"
   },
   "files": [
     "lib",
@@ -23,13 +24,14 @@
     "test": "test"
   },
   "author": "Kevin Van Lierde (https://webketje.com)",
-  "license": "MIT",
+  "license": "LGPL-3.0-or-later",
   "bugs": {
-    "url": "https://github.com/metalsmith/~core-plugin~/issues"
+    "url": "https://github.com/metalsmith/sass/issues"
   },
-  "homepage": "https://github.com/metalsmith/~core-plugin~#readme",
+  "homepage": "https://github.com/metalsmith/sass#readme",
   "dependencies": {
-    "debug": "^4.3.3"
+    "debug": "^4.3.3",
+    "sass": "^1.48.0"
   },
   "devDependencies": {
     "assert-dir-equal": "^1.1.0",
@@ -55,7 +57,7 @@
     "test": "nyc mocha"
   },
   "engines": {
-    "node": ">=8"
+    "node": ">=10"
   },
   "publishConfig": {
     "access": "public"

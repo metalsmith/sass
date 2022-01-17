@@ -1,13 +1,6 @@
----
-Note: This is a template repository
-Usage: 
-  - step1: Click "Use this template", see also https://docs.github.com/en/repositories/creating-and-managing-repositories/creating-a-repository-from-a-template, fill in new plugin details
-  - step2: Search and replace all `core-plugin` `CorePlugin` and `corePlugin` matches with the name of the plugin
-  - step3: Delete the front-matter in this file
----
-# @metalsmith/~core-plugin~
+# @metalsmith/sass
 
-A metalsmith plugin to...
+A Metalsmith plugin to compile SASS/SCSS files
 
 [![metalsmith: core plugin][metalsmith-badge]][metalsmith-url]
 [![npm: version][npm-badge]][npm-url]
@@ -15,88 +8,123 @@ A metalsmith plugin to...
 [![code coverage][codecov-badge]][codecov-url]
 [![license: MIT][license-badge]][license-url]
 
-\[Optional\] An extended description of the core plugin
+Compile SASS/SCSS source files to CSS using [dart-sass](https://sass-lang.com/dart-sass). Specify `'lib/style.scss': 'style.css'` key-value pairs in the `entries` object for all root stylesheets. Provides SCSS sourcemaps and access to all advanced [sass options](https://sass-lang.com/documentation/js-api/interfaces/Options)
 
 ## Installation
 
 NPM:
 ```
-npm install @metalsmith/~core-plugin~
+npm install @metalsmith/sass
 ```
 Yarn:
 ```
-yarn add @metalsmith/~core-plugin~
+yarn add @metalsmith/sass
 ```
 
 ## Usage
 
-Pass `@metalsmith/~core-plugin~` to `metalsmith.use` :
+Pass `@metalsmith/sass` to `metalsmith.use` :
 
 ```js
-const ~corePlugin~ = require('@metalsmith/~core-plugin~')
+const sass = require('@metalsmith/sass')
 
-metalsmith.use(~corePlugin~()) // defaults
-metalsmith.use(~corePlugin~({  // explicit defaults
-  ...
+metalsmith.use(sass()) // defaults
+metalsmith.use(sass({  // explicit defaults
+  style: process.env.NODE_ENV === 'development' ? 'expanded' : 'compressed',
+  sourceMap: process.env.NODE_ENV === 'development',
+  entries: {
+    // 'src.scss': 'destination.css'
+  }
 }))
 ```
 
-### Options (optional)
+If `process.env.NODE_ENV` is *explicitly* set to development,`@metalsmith/sass` will automatically generate sourcemaps and will not minify the output.
 
-Optional section with list or table of options, if the plugin has a lot of options
+### Example
+If you had a blog project with 2 SCSS stylesheets, `main.scss` to be loaded everywhere, and `blogpost.scss` only on blog post pages:
 
-### Specific usage example
+```plaintext
+my-blog
+├── lib
+│   ├── blogpost.scss
+│   └── main.scss
+└── src
+    ├── blog.html
+    └── index.html
+```
+...you would specify the following config:
 
-Document a first specific usage example
+```js
+metalsmith.use(sass({
+  entries: {
+    'lib/blogpost.scss': 'css/blogpost.css',
+    'lib/main.scss': 'css/main.css'
+  }
+}))
+```
+**Important**: the keys in the `entries` option are *relative to `Metalsmith.directory`*, while the values are *relative to `Metalsmith.source`*.
+With this setup metalsmith will generate the following build:
 
-### Specific usage example
-
-Document a second specific usage example
+```plaintext
+build
+  ├── css
+  │   ├── styles.css
+  │   └── styles.css
+  ├── blog.html
+  └── index.html
+```
+You could also put the SCSS source files inside `Metalsmith.source` if you prefer (they will be converted and the source .scss files removed), but note that this will make metalsmith read all the SCSS files in memory and is only interesting if you need to apply other plugins to the files before `@metalsmith/sass` runs.
 
 ### Debug
 
-To enable debug logs, set the `DEBUG` environment variable to `@metalsmith/~core-plugin~`:
+To enable debug logs, set the `DEBUG` environment variable to `@metalsmith/sass`:
 
 Linux/Mac:
 ```
-DEBUG=@metalsmith/~core-plugin~
+DEBUG=@metalsmith/sass
 ```
 Windows:
 ```
-set "DEBUG=@metalsmith/~core-plugin~"
+set "DEBUG=@metalsmith/sass"
 ```
 
 Alternatively you can set `DEBUG` to `@metalsmith/*` to debug all Metalsmith core plugins.
 
 ### CLI usage
 
-To use this plugin with the Metalsmith CLI, add `@metalsmith/~core-plugin~` to the `plugins` key in your `metalsmith.json` file:
+To use this plugin with the Metalsmith CLI, add `@metalsmith/sass` to the `plugins` key in your `metalsmith.json` file:
 
 ```json
 {
   "plugins": [
     {
-      "@metalsmith/~core-plugin~": {}
+      "@metalsmith/sass": {
+        "style": "compressed",
+        "sourceMap": false,
+        "entries": {
+          "lib/scss/main.scss": "assets/styles.css"
+        }
+      }
     }
   ]
 }
 ```
 
-## Credits (optional)
+## Node compatibility
 
-Special thanks to ... for ...
+This plugin runs on Node >= 8.9.0 
 
 ## License
 
-[MIT](LICENSE)
+[LGPL-3.0](LICENSE)
 
-[npm-badge]: https://img.shields.io/npm/v/@metalsmith/~core-plugin~.svg
-[npm-url]: https://www.npmjs.com/package/@metalsmith/~core-plugin~
-[ci-badge]: https://app.travis-ci.com/metalsmith/~core-plugin~.svg?branch=master
-[ci-url]: https://app.travis-ci.com/github/metalsmith/~core-plugin~
+[npm-badge]: https://img.shields.io/npm/v/@metalsmith/sass.svg
+[npm-url]: https://www.npmjs.com/package/@metalsmith/sass
+[ci-badge]: https://app.travis-ci.com/metalsmith/sass.svg?branch=master
+[ci-url]: https://app.travis-ci.com/github/metalsmith/sass
 [metalsmith-badge]: https://img.shields.io/badge/metalsmith-core_plugin-green.svg?longCache=true
 [metalsmith-url]: https://metalsmith.io
-[codecov-badge]: https://img.shields.io/coveralls/github/metalsmith/~core-plugin~
-[codecov-url]: https://coveralls.io/github/metalsmith/~core-plugin~
-[license-badge]: https://img.shields.io/github/license/metalsmith/~core-plugin~
+[codecov-badge]: https://img.shields.io/coveralls/github/metalsmith/sass
+[codecov-url]: https://coveralls.io/github/metalsmith/sass
+[license-badge]: https://img.shields.io/github/license/metalsmith/sass
 [license-url]: LICENSE

@@ -9,22 +9,100 @@ function fixture(p) {
   return require('path').resolve(__dirname, 'fixtures', p)
 }
 
-describe('@metalsmith/~core-plugin~', function() {
-  it('should export a named plugin function matching package.json name', function() {
+describe('@metalsmith/sass', function () {
+  it('should export a named plugin function matching package.json name', function () {
     const namechars = name.split('/')[1]
-    const camelCased = namechars.split('')
-      .reduce((str, char, i) => {
-        str += namechars[i - 1] === '-' ? char.toUpperCase() : char === '-' ? '' : char
-        return str
-      }, '')
-    assert.strictEqual(plugin().name, camelCased.replace(/~/g, ''))
+    const camelCased = namechars.split('').reduce((str, char, i) => {
+      str += namechars[i - 1] === '-' ? char.toUpperCase() : char === '-' ? '' : char
+      return str
+    }, '')
+    assert.strictEqual(plugin().name, camelCased)
   })
-  it('should not crash the metalsmith build when using default options', function(done) {
+  it('should not crash the metalsmith build when using default options', function (done) {
+    // this test also tests whether the defaults work as expected: style: compressed, sourceMap: false
     Metalsmith(fixture('default'))
-      .use(plugin())
-      .build(err => {
+      .clean(true)
+      .use(
+        plugin({
+          entries: {
+            'lib/main.scss': 'css/styles.css'
+          }
+        })
+      )
+      .build((err) => {
         assert.strictEqual(err, null)
         equals(fixture('default/build'), fixture('default/expected'))
+        done()
+      })
+  })
+
+  it('should allow generating sourceMaps', function (done) {
+    Metalsmith(fixture('sass-options'))
+      .clean(true)
+      .use(
+        plugin({
+          style: 'expanded',
+          sourceMap: true,
+          sourceMapIncludeSources: true,
+          entries: {
+            'lib/main.scss': 'css/styles.css'
+          }
+        })
+      )
+      .build((err) => {
+        assert.strictEqual(err, null)
+        equals(fixture('sass-options/build'), fixture('sass-options/expected'))
+        done()
+      })
+  })
+
+  it('should remove scss source files if they are inside metalsmith.source', function (done) {
+    Metalsmith(fixture('inside-source-dir'))
+      .clean(true)
+      .use(
+        plugin({
+          entries: {
+            'src/main.scss': 'styles.css'
+          }
+        })
+      )
+      .build((err) => {
+        assert.strictEqual(err, null)
+        equals(fixture('inside-source-dir/build'), fixture('inside-source-dir/expected'))
+        done()
+      })
+  })
+
+  it('should throw on invalid scss', function (done) {
+    Metalsmith(fixture('invalid-scss'))
+      .clean(true)
+      .use(
+        plugin({
+          entries: {
+            'lib/main.scss': 'css/styles.css',
+            'lib/invalid.scss': 'css/invalid.css'
+          }
+        })
+      )
+      .build((err) => {
+        assert.strictEqual(err instanceof Error, true)
+        done()
+      })
+  })
+
+  it('should throw on invalid entry paths', function (done) {
+    Metalsmith(fixture('invalid-scss'))
+      .clean(true)
+      .use(
+        plugin({
+          entries: {
+            'lib/inexistant.scss': 'css/inexistant.css'
+          }
+        })
+      )
+      .build((err) => {
+        assert.strictEqual(err instanceof Error, true)
+        assert.strictEqual(err.message, 'test/fixtures/invalid-scss/lib/inexistant.scss: no such file or directory')
         done()
       })
   })
