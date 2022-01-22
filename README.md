@@ -8,7 +8,7 @@ A Metalsmith plugin to compile SASS/SCSS files
 [![code coverage][codecov-badge]][codecov-url]
 [![license: MIT][license-badge]][license-url]
 
-Compile SASS/SCSS source files to CSS using [dart-sass](https://sass-lang.com/dart-sass). Specify `'lib/style.scss': 'style.css'` key-value pairs in the `entries` object for all root stylesheets. Provides SCSS sourcemaps and access to all advanced [sass options](https://sass-lang.com/documentation/js-api/interfaces/Options)
+Compile SASS/SCSS source files to CSS using [dart-sass](https://sass-lang.com/dart-sass). Specify `'relative/to/dir/style.scss': 'relative/to/source/style.css'` key-value pairs in the `entries` object for all root stylesheets. Provides SCSS sourcemaps and access to all advanced [sass options](https://sass-lang.com/documentation/js-api/interfaces/Options) except async.
 
 ## Installation
 
@@ -27,13 +27,17 @@ Pass `@metalsmith/sass` to `metalsmith.use` :
 
 ```js
 const sass = require('@metalsmith/sass')
+const isDev = process.env.NODE_ENV === 'development';
 
 metalsmith.use(sass({ entries: {
     // 'src.scss': 'destination.css'
 }})) // defaults
+
 metalsmith.use(sass({  // explicit defaults
-  style: process.env.NODE_ENV === 'development' ? 'expanded' : 'compressed',
-  sourceMap: process.env.NODE_ENV === 'development',
+  style:  isDev ? 'expanded' : 'compressed',
+  sourceMap: isDev,
+  sourceMapIncludeSources: isDev,
+  loadPaths: ['node_modules']
   entries: {
     // 'src.scss': 'destination.css'
   }
@@ -75,7 +79,7 @@ build
   ├── blog.html
   └── index.html
 ```
-You could also put the SCSS source files inside `Metalsmith.source` if you prefer (they will be converted and the source .scss files removed), but note that this will make metalsmith read all the SCSS files in memory and is only interesting if you need to read metadata from/ apply other plugins to the files before `@metalsmith/sass` runs.
+You could also put the SCSS source files inside `Metalsmith.source` if you prefer (they will be converted and the source .scss files removed from the build), but note that this will make metalsmith read all the SCSS files in memory and is only interesting if you need to read metadata from/ apply other plugins to the files before or after `@metalsmith/sass` runs.
 
 ### Debug
 
@@ -103,6 +107,8 @@ To use this plugin with the Metalsmith CLI, add `@metalsmith/sass` to the `plugi
       "@metalsmith/sass": {
         "style": "compressed",
         "sourceMap": false,
+        "sourceMapIncludeSources": false,
+        "loadPaths": ["node_modules"],
         "entries": {
           "lib/scss/main.scss": "assets/styles.css"
         }
