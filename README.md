@@ -13,10 +13,13 @@ Compile SASS/SCSS source files to CSS using [dart-sass](https://sass-lang.com/da
 ## Installation
 
 NPM:
+
 ```
 npm install @metalsmith/sass
 ```
+
 Yarn:
+
 ```
 yarn add @metalsmith/sass
 ```
@@ -44,9 +47,10 @@ metalsmith.use(sass({  // explicit defaults
 }))
 ```
 
-If `process.env.NODE_ENV` is *explicitly* set to development,`@metalsmith/sass` will automatically generate sourcemaps and will not minify the output.
+If `process.env.NODE_ENV` is _explicitly_ set to development,`@metalsmith/sass` will automatically generate sourcemaps and will not minify the output.
 
 ### Example
+
 If you had a blog project with 2 SCSS stylesheets, `main.scss` to be loaded everywhere, and `blogpost.scss` only on blog post pages:
 
 ```plaintext
@@ -58,17 +62,21 @@ my-blog
     ├── blog.html
     └── index.html
 ```
+
 ...you would specify the following config:
 
 ```js
-metalsmith.use(sass({
-  entries: {
-    'lib/blogpost.scss': 'css/blogpost.css',
-    'lib/main.scss': 'css/main.css'
-  }
-}))
+metalsmith.use(
+  sass({
+    entries: {
+      'lib/blogpost.scss': 'css/blogpost.css',
+      'lib/main.scss': 'css/main.css'
+    }
+  })
+)
 ```
-**Important**: the keys in the `entries` option are *relative to `Metalsmith.directory`*, while the values are *relative to `Metalsmith.source`*.
+
+**Important**: the keys in the `entries` option are _relative to `Metalsmith.directory`_, while the values are _relative to `Metalsmith.source`_.
 With this setup metalsmith will generate the following build:
 
 ```plaintext
@@ -79,6 +87,7 @@ build
   ├── blog.html
   └── index.html
 ```
+
 You could also put the SCSS source files inside `Metalsmith.source` if you prefer (they will be converted and the source .scss files removed from the build), but note that this will make metalsmith read all the SCSS files in memory and is only interesting if you need to read metadata from/ apply other plugins to the files before or after `@metalsmith/sass` runs.
 
 ### Debug
@@ -86,10 +95,13 @@ You could also put the SCSS source files inside `Metalsmith.source` if you prefe
 To enable debug logs, set the `DEBUG` environment variable to `@metalsmith/sass`:
 
 Linux/Mac:
+
 ```
 DEBUG=@metalsmith/sass
 ```
+
 Windows:
+
 ```
 set "DEBUG=@metalsmith/sass"
 ```

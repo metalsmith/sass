@@ -53,11 +53,7 @@ describe('@metalsmith/sass', function () {
       .process((err, files) => {
         assert.strictEqual(err, null)
         // unfortunately the dir-equals assertion cannot be used as the SASS map output is not always exactly the same
-        assert.deepStrictEqual(Object.keys(files).sort(), [
-          'css/styles.css',
-          'css/styles.css.map',
-          'index.html'
-        ])
+        assert.deepStrictEqual(Object.keys(files).sort(), ['css/styles.css', 'css/styles.css.map', 'index.html'])
         done()
       })
   })
@@ -125,7 +121,11 @@ describe('@metalsmith/sass', function () {
       )
       .build((err) => {
         assert.strictEqual(err instanceof Error, true)
-        assert.strictEqual(err.message, require('path').join('test','fixtures','invalid-scss','lib','inexistant.scss') + ': no such file or directory')
+        assert.strictEqual(
+          err.message,
+          require('path').join('test', 'fixtures', 'invalid-scss', 'lib', 'inexistant.scss') +
+            ': no such file or directory'
+        )
         done()
       })
   })
