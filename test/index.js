@@ -62,6 +62,23 @@ describe('@metalsmith/sass', function () {
       })
   })
 
+  it('should support importing node_modules relative paths out of the box', function (done) {
+    Metalsmith(fixture('loading_nodemodule'))
+      .clean(true)
+      .use(
+        plugin({
+          entries: {
+            'lib/main.scss': 'css/styles.css'
+          }
+        })
+      )
+      .build((err) => {
+        assert.strictEqual(err, null)
+        equals(fixture('loading_nodemodule/build'), fixture('loading_nodemodule/expected'))
+        done()
+      })
+  })
+
   it('should remove scss source files if they are inside metalsmith.source', function (done) {
     Metalsmith(fixture('inside-source-dir'))
       .clean(true)
