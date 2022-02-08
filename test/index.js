@@ -75,6 +75,8 @@ describe('@metalsmith/sass', function () {
       })
   })
 
+  // the test scss file contains YAML front-matter: when SCSS files are read from source dir,
+  // @metalsmith/sass should use sass.compileString to continue processing the in-memory buffer instead of reading from disk
   it('should remove scss source files if they are inside metalsmith.source', function (done) {
     Metalsmith(fixture('inside-source-dir'))
       .clean(true)
