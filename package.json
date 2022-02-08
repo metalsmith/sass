@@ -61,7 +61,7 @@
     "test": "nyc mocha -t 5000"
   },
   "engines": {
-    "node": ">=10"
+    "node": ">=12"
   },
   "publishConfig": {
     "access": "public"

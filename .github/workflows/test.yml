@@ -53,3 +53,10 @@ jobs:
 
       - run: npm install
       - run: npm test
+      - if: matrix.os == 'ubuntu-latest' && matrix.node == '16'
+        run: npm run coverage
+      - if: matrix.os == 'ubuntu-latest' && matrix.node == '16'
+        uses: coverallsapp/github-action@v1.1.2
+        with:
+          github-token: ${{ github.token }}
+          path-to-lcov: ./coverage.info
