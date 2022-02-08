@@ -56,7 +56,7 @@
     "format": "prettier --write \"**/*.{yml,md,js,json}\"",
     "lint": "eslint --cache --fix-dry-run .",
     "release": "release-it .",
-    "test": "nyc mocha"
+    "test": "nyc mocha -t 5000"
   },
   "engines": {
     "node": ">=10"

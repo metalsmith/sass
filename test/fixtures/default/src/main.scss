@@ -1,0 +1,6 @@
+body {
+  font-family: sans-serif;
+}
+@import './partial';
+@import './nested/otherpartial';
+@import '../outsidePartial';

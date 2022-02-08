@@ -18,20 +18,69 @@ describe('@metalsmith/sass', function () {
     }, '')
     assert.strictEqual(plugin().name, camelCased)
   })
+
   it('should not crash the metalsmith build when using default options', function (done) {
     // this test also tests whether the defaults work as expected: style: compressed, sourceMap: false
     Metalsmith(fixture('default'))
       .clean(true)
+      .use(plugin())
+      .build((err, files) => {
+        assert.strictEqual(err, null)
+        assert.strictEqual(files['_partial.scss'], undefined)
+        equals(fixture('default/build'), fixture('default/expected'))
+        done()
+      })
+  })
+
+  it('should support the "entries" option', function (done) {
+    // this test also tests whether the defaults work as expected: style: compressed, sourceMap: false
+    Metalsmith(fixture('entries'))
+      .clean(true)
       .use(
         plugin({
           entries: {
-            'lib/main.scss': 'css/styles.css'
+            'lib/explicit.scss': 'css/explicit.css'
           }
         })
       )
       .build((err) => {
         assert.strictEqual(err, null)
-        equals(fixture('default/build'), fixture('default/expected'))
+        equals(fixture('entries/build'), fixture('entries/expected'))
+        done()
+      })
+  })
+
+  it('should support multiple entries in "entries" option', function (done) {
+    Metalsmith(fixture('entries-multi'))
+      .clean(true)
+      .use(
+        plugin({
+          entries: {
+            'lib/main.scss': 'css/styles.css',
+            'lib/style.scss': 'style.css'
+          }
+        })
+      )
+      .build((err) => {
+        assert.strictEqual(err, null)
+        equals(fixture('entries-multi/build'), fixture('entries-multi/expected'))
+        done()
+      })
+  })
+
+  it('should support mixed implicit & explicit entries', function (done) {
+    Metalsmith(fixture('entries-mixed'))
+      .clean(true)
+      .use(
+        plugin({
+          entries: {
+            'lib/outside.scss': 'output/outside.css'
+          }
+        })
+      )
+      .build((err) => {
+        assert.strictEqual(err, null)
+        equals(fixture('entries-mixed/build'), fixture('entries-mixed/expected'))
         done()
       })
   })
