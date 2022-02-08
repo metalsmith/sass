@@ -234,8 +234,8 @@ This plugin runs on Node >= 12. If you need to compile sass/scss on earier Node 
 
 [npm-badge]: https://img.shields.io/npm/v/@metalsmith/sass.svg
 [npm-url]: https://www.npmjs.com/package/@metalsmith/sass
-[ci-badge]: https://app.travis-ci.com/metalsmith/sass.svg?branch=master
-[ci-url]: https://app.travis-ci.com/github/metalsmith/sass
+[ci-badge]: https://github.com/metalsmith/sass/actions/workflows/test.yml/badge.svg
+[ci-url]: https://github.com/metalsmith/sass/actions/workflows/test.yml
 [metalsmith-badge]: https://img.shields.io/badge/metalsmith-core_plugin-green.svg?longCache=true
 [metalsmith-url]: https://metalsmith.io
 [codecov-badge]: https://img.shields.io/coveralls/github/metalsmith/sass
