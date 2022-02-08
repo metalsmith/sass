@@ -2,6 +2,7 @@ const assert = require('assert')
 const equals = require('assert-dir-equal')
 const { describe, it } = require('mocha')
 const Metalsmith = require('metalsmith')
+const inPlace = require('metalsmith-in-place')
 const { name } = require('../package.json')
 const plugin = require('..')
 
@@ -25,7 +26,7 @@ describe('@metalsmith/sass', function () {
       .clean(true)
       .use(plugin())
       .build((err, files) => {
-        assert.strictEqual(err, null)
+        if(err) done(err)
         assert.strictEqual(files['_partial.scss'], undefined)
         equals(fixture('default/build'), fixture('default/expected'))
         done()
@@ -44,7 +45,7 @@ describe('@metalsmith/sass', function () {
         })
       )
       .build((err) => {
-        assert.strictEqual(err, null)
+        if(err) done(err)
         equals(fixture('entries/build'), fixture('entries/expected'))
         done()
       })
@@ -62,7 +63,7 @@ describe('@metalsmith/sass', function () {
         })
       )
       .build((err) => {
-        assert.strictEqual(err, null)
+        if(err) done(err)
         equals(fixture('entries-multi/build'), fixture('entries-multi/expected'))
         done()
       })
@@ -79,7 +80,7 @@ describe('@metalsmith/sass', function () {
         })
       )
       .build((err) => {
-        assert.strictEqual(err, null)
+        if(err) done(err)
         equals(fixture('entries-mixed/build'), fixture('entries-mixed/expected'))
         done()
       })
@@ -100,7 +101,7 @@ describe('@metalsmith/sass', function () {
         })
       )
       .process((err, files) => {
-        assert.strictEqual(err, null)
+        if (err) done(err)
         // unfortunately the dir-equals assertion cannot be used as the SASS map output is not always exactly the same
         assert.deepStrictEqual(Object.keys(files).sort(), ['css/styles.css', 'css/styles.css.map', 'index.html'])
         done()
@@ -118,7 +119,7 @@ describe('@metalsmith/sass', function () {
         })
       )
       .build((err) => {
-        assert.strictEqual(err, null)
+        if (err) done(err)
         equals(fixture('loading_nodemodule/build'), fixture('loading_nodemodule/expected'))
         done()
       })
@@ -137,8 +138,28 @@ describe('@metalsmith/sass', function () {
         })
       )
       .build((err) => {
-        assert.strictEqual(err, null)
+        if (err) done(err)
         equals(fixture('inside-source-dir/build'), fixture('inside-source-dir/expected'))
+        done()
+      })
+  })
+
+  it('should allow pre-processing metadata with in-place', function (done) {
+    Metalsmith(fixture('preprocess-metadata'))
+      .clean(true)
+      .metadata({
+        theme: {
+          color: {
+            primary: '#333444',
+            background: '#EEEFFF'
+          }
+        }
+      })
+      .use(inPlace())
+      .use(plugin())
+      .build((err) => {
+        assert.strictEqual(err, null)
+        equals(fixture('preprocess-metadata/build'), fixture('preprocess-metadata/expected'))
         done()
       })
   })

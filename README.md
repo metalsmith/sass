@@ -8,7 +8,15 @@ A Metalsmith plugin to compile SASS/SCSS files
 [![code coverage][codecov-badge]][codecov-url]
 [![license: MIT][license-badge]][license-url]
 
-Compile SASS/SCSS source files to CSS using [dart-sass](https://sass-lang.com/dart-sass). Specify `'relative/to/dir/style.scss': 'relative/to/source/style.css'` key-value pairs in the `entries` object for all root stylesheets. Provides SCSS sourcemaps and access to all advanced [sass options](https://sass-lang.com/documentation/js-api/interfaces/Options) except async.
+Compile SASS/SCSS source & lib files to CSS using [dart-sass](https://sass-lang.com/dart-sass). 
+
+## Features
+
+* Automatically compiles all .scss/.sass files in `Metalsmith.source()`.
+* Automatically removes all `_partial.scss/sass` files from the build after compilation
+* Add files from outside the source dir with the `entries` option. Specify `'relative/to/dir/style.scss': 'relative/to/destination/style.css'` key-value pairs in the `entries` object for all root stylesheets.
+* Provides sourcemaps and access to all advanced [sass options](https://sass-lang.com/documentation/js-api/interfaces/Options) except async.
+* Compatible with [metalsmith-postcss](https://github.com/webketje/metalsmith-postcss)
 
 ## Installation
 
@@ -32,9 +40,8 @@ Pass `@metalsmith/sass` to `metalsmith.use` :
 const sass = require('@metalsmith/sass')
 const isDev = process.env.NODE_ENV === 'development';
 
-metalsmith.use(sass({ entries: {
-    // 'src.scss': 'destination.css'
-}})) // defaults
+// compile all scss/sass files in metalsmith.source()
+metalsmith.use(sass()) // defaults
 
 metalsmith.use(sass({  // explicit defaults
   style:  isDev ? 'expanded' : 'compressed',
@@ -42,53 +49,139 @@ metalsmith.use(sass({  // explicit defaults
   sourceMapIncludeSources: isDev,
   loadPaths: ['node_modules']
   entries: {
-    // 'src.scss': 'destination.css'
+    // add scss entry points from
+    'lib/outside-source.scss': 'style/inside-source.css'
   }
 }))
 ```
 
 If `process.env.NODE_ENV` is _explicitly_ set to development,`@metalsmith/sass` will automatically generate sourcemaps and will not minify the output.
 
-### Example
+### Entries
 
-If you had a blog project with 2 SCSS stylesheets, `main.scss` to be loaded everywhere, and `blogpost.scss` only on blog post pages:
+If you had a blog project with 2 SCSS stylesheets, `index.scss` to be loaded everywhere, and `blogposts.scss` only on blog post pages:
 
 ```plaintext
 my-blog
 ├── lib
-│   ├── blogpost.scss
-│   └── main.scss
+|   ├── index.scss
+│   └── _lib-partial.scss
 └── src
     ├── blog.html
-    └── index.html
+    ├── index.html
+    └── css
+        ├── _in-source-partial.scss
+        └── blogposts.scss
 ```
 
-...you would specify the following config:
+...you could specify the following config:
 
 ```js
 metalsmith.use(
   sass({
     entries: {
-      'lib/blogpost.scss': 'css/blogpost.css',
-      'lib/main.scss': 'css/main.css'
+      'lib/index.scss': 'css/index.css'
     }
   })
 )
 ```
 
-**Important**: the keys in the `entries` option are _relative to `Metalsmith.directory`_, while the values are _relative to `Metalsmith.source`_.
+*Note: the keys in the `entries` option are _relative to `Metalsmith.directory`_, while the values are _relative to `Metalsmith.destination`_.*
+
 With this setup metalsmith will generate the following build:
 
 ```plaintext
 build
   ├── css
-  │   ├── blogpost.css
-  │   └── main.css
+  │   ├── blogposts.css
+  │   └── index.css
   ├── blog.html
   └── index.html
 ```
 
-You could also put the SCSS source files inside `Metalsmith.source` if you prefer (they will be converted and the source .scss files removed from the build), but note that this will make metalsmith read all the SCSS files in memory and is only interesting if you need to read metadata from/ apply other plugins to the files before or after `@metalsmith/sass` runs.
+Partial `_in-source-partial.scss` is automatically removed from the build after compilation.
+When not explicitly specified in the config, in-source `.scss/.sass` files are added as entries `'<source>/file.scss': <dest>/file.css`.
+If you want to move or rename the in-source SCSS entries in the build, specify them explicitly in the `entries` config. For example let's write the `blogpost.scss` to `css/blog/index.css` instead, without touching our source dir structure:
+
+```js
+metalsmith.use(
+  sass({
+    entries: {
+      'lib/index.scss': 'css/index.css',
+      'src/blogposts.scss': 'css/blog/index.css'
+    }
+  })
+)
+```
+
+The result:
+
+```plaintext
+build
+  ├── css
+  │   ├── index.css
+  │   └── blog
+  │       └── index.css
+  ├── blog.html
+  └── index.html
+```
+
+### @import/ @use partials
+
+Sass partials are processed by [dart-sass](https://sass-lang.com/dart-sass). @metalsmith/sass will gracefully handle in-source partials, but they will be read into memory by Metalsmith. If you don't need to preprocess sass partials with any other metalsmith plugin it is *better to store partials outside the source directory*, eg:
+
+```plaintext
+my-blog
+├── lib
+│   ├── _partial1.scss
+│   └── _partial2.scss
+└── src
+    └── css
+        └── index.scss
+```
+
+### Passing metadata to SASS files
+
+You can pass metadata to SASS files inside `Metalsmith.source()` through front-matter in the file or global metadata. For example, let's pass metalsmith `theme` metadata to SASS and pre-compile with [metalsmith-in-place](https://github.com.metalsmith/metalsmith-in-place) and [jstransformer-handlebars](https://github.com/jstransformers/jstransformer-handlebars) (notice the final `.hbs` extension):
+
+`index.scss.hbs`
+```scss
+---
+fontfamily: 'Arial, sans-serif'
+---
+$color-primary: {{ theme.color.primary }};
+$color-background: {{ theme.color.background }};
+
+body {
+  font-family: {{ fontfamily }};
+  color: $color-primary;
+  background-color: $color-background;
+}
+```
+
+Just take care to run the in-place plugin before sass:
+
+```js
+const Metalsmith = require('metalsmith')
+const inPlace = require('metalsmith-in-place')
+const sass = require('@metalsmith/sass')
+
+Metalsmith(__dirname)
+  .metadata({
+    theme: {
+      color: {
+        primary: '#333444',
+        background: '#EEEFFF'
+      }
+    }
+  })
+  .use(inPlace())
+  .use(sass())
+  .build((err) => {
+    if (err) throw err
+    console.log('Success!')
+  })
+```
 
 ### Debug
 
@@ -122,7 +215,7 @@ To use this plugin with the Metalsmith CLI, add `@metalsmith/sass` to the `plugi
         "sourceMapIncludeSources": false,
         "loadPaths": ["node_modules"],
         "entries": {
-          "lib/scss/main.scss": "assets/styles.css"
+          "lib/scss/index.scss": "assets/styles.css"
         }
       }
     }
