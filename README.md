@@ -8,15 +8,15 @@ A Metalsmith plugin to compile SASS/SCSS files
 [![code coverage][codecov-badge]][codecov-url]
 [![license: MIT][license-badge]][license-url]
 
-Compile SASS/SCSS source & lib files to CSS using [dart-sass](https://sass-lang.com/dart-sass). 
+Compile SASS/SCSS source & lib files to CSS using [dart-sass](https://sass-lang.com/dart-sass).
 
 ## Features
 
-* Automatically compiles all .scss/.sass files in `Metalsmith.source()`.
-* Automatically removes all `_partial.scss/sass` files from the build after compilation
-* Add files from outside the source dir with the `entries` option. Specify `'relative/to/dir/style.scss': 'relative/to/destination/style.css'` key-value pairs in the `entries` object for all root stylesheets.
-* Provides sourcemaps and access to all advanced [sass options](https://sass-lang.com/documentation/js-api/interfaces/Options) except async.
-* Compatible with [metalsmith-postcss](https://github.com/webketje/metalsmith-postcss)
+- Automatically compiles all .scss/.sass files in `Metalsmith.source()`.
+- Automatically removes all `_partial.scss/sass` files from the build after compilation
+- Add files from outside the source dir with the `entries` option. Specify `'relative/to/dir/style.scss': 'relative/to/destination/style.css'` key-value pairs in the `entries` object for all root stylesheets.
+- Provides sourcemaps and access to all advanced [sass options](https://sass-lang.com/documentation/js-api/interfaces/Options) except async.
+- Compatible with [metalsmith-postcss](https://github.com/webketje/metalsmith-postcss)
 
 ## Installation
 
@@ -86,7 +86,7 @@ metalsmith.use(
 )
 ```
 
-*Note: the keys in the `entries` option are _relative to `Metalsmith.directory`_, while the values are _relative to `Metalsmith.destination`_.*
+_Note: the keys in the `entries` option are *relative to `Metalsmith.directory`*, while the values are *relative to `Metalsmith.destination`*._
 
 With this setup metalsmith will generate the following build:
 
@@ -128,7 +128,7 @@ build
 
 ### @import/ @use partials
 
-Sass partials are processed by [dart-sass](https://sass-lang.com/dart-sass). @metalsmith/sass will gracefully handle in-source partials, but they will be read into memory by Metalsmith. If you don't need to preprocess sass partials with any other metalsmith plugin it is *better to store partials outside the source directory*, eg:
+Sass partials are processed by [dart-sass](https://sass-lang.com/dart-sass). @metalsmith/sass will gracefully handle in-source partials, but they will be read into memory by Metalsmith. If you don't need to preprocess sass partials with any other metalsmith plugin it is _better to store partials outside the source directory_, eg:
 
 ```plaintext
 my-blog
@@ -145,6 +145,7 @@ my-blog
 You can pass metadata to SASS files inside `Metalsmith.source()` through front-matter in the file or global metadata. For example, let's pass metalsmith `theme` metadata to SASS and pre-compile with [metalsmith-in-place](https://github.com.metalsmith/metalsmith-in-place) and [jstransformer-handlebars](https://github.com/jstransformers/jstransformer-handlebars) (notice the final `.hbs` extension):
 
 `index.scss.hbs`
+
 ```scss
 ---
 fontfamily: 'Arial, sans-serif'
@@ -225,7 +226,7 @@ To use this plugin with the Metalsmith CLI, add `@metalsmith/sass` to the `plugi
 
 ## Node compatibility
 
-This plugin runs on Node >= 10. If you need to compile sass/scss on earier Node versions, use the [metalsmith-sass](https://github.com/stevenschobert/metalsmith-sass) which uses the (no longer canonical) lib-sass.
+This plugin runs on Node >= 12. If you need to compile sass/scss on earier Node versions, use the [metalsmith-sass](https://github.com/stevenschobert/metalsmith-sass) which uses the (no longer canonical) lib-sass.
 
 ## License
 

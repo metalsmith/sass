@@ -26,7 +26,7 @@ describe('@metalsmith/sass', function () {
       .clean(true)
       .use(plugin())
       .build((err, files) => {
-        if(err) done(err)
+        if (err) done(err)
         assert.strictEqual(files['_partial.scss'], undefined)
         equals(fixture('default/build'), fixture('default/expected'))
         done()
@@ -45,7 +45,7 @@ describe('@metalsmith/sass', function () {
         })
       )
       .build((err) => {
-        if(err) done(err)
+        if (err) done(err)
         equals(fixture('entries/build'), fixture('entries/expected'))
         done()
       })
@@ -63,7 +63,7 @@ describe('@metalsmith/sass', function () {
         })
       )
       .build((err) => {
-        if(err) done(err)
+        if (err) done(err)
         equals(fixture('entries-multi/build'), fixture('entries-multi/expected'))
         done()
       })
@@ -80,7 +80,7 @@ describe('@metalsmith/sass', function () {
         })
       )
       .build((err) => {
-        if(err) done(err)
+        if (err) done(err)
         equals(fixture('entries-mixed/build'), fixture('entries-mixed/expected'))
         done()
       })
