@@ -39,7 +39,7 @@
     "coveralls": "^3.1.1",
     "eslint": "^8.4.1",
     "eslint-config-prettier": "^8.3.0",
-    "metalsmith": "^2.3.0",
+    "metalsmith": "^2.4.1",
     "mocha": "^7.2.0",
     "node_module_sass": "./test/fixtures/loading_nodemodule/lib/node_module_sass",
     "nyc": "^15.1.0",
@@ -47,7 +47,7 @@
     "release-it": "^14.12.3"
   },
   "peerDependencies": {
-    "metalsmith": "^2.3.0"
+    "metalsmith": "^2.4.1"
   },
   "scripts": {
     "changelog": "auto-changelog -u date --commit-limit false --ignore-commit-pattern '^((dev|chore|ci):|Release)'",
