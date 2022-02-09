@@ -45,7 +45,7 @@
     "node_module_sass": "./test/fixtures/loading_nodemodule/lib/node_module_sass",
     "nyc": "^15.1.0",
     "prettier": "^2.5.1",
-    "release-it": "^14.12.4"
+    "release-it": "^14.12.3"
   },
   "peerDependencies": {
     "metalsmith": "^2.4.1"
