@@ -30,8 +30,8 @@
   },
   "homepage": "https://github.com/metalsmith/sass#readme",
   "dependencies": {
-    "debug": "^4.3.3",
-    "sass": "^1.49.7"
+    "debug": "^4.3.4",
+    "sass": "^1.53.0"
   },
   "devDependencies": {
     "assert-dir-equal": "^1.1.0",
