@@ -142,7 +142,7 @@ my-blog
 
 ### Passing metadata to SASS files
 
-You can pass metadata to SASS files inside `Metalsmith.source()` through front-matter in the file or global metadata. For example, let's pass metalsmith `theme` metadata to SASS and pre-compile with [metalsmith-in-place](https://github.com.metalsmith/metalsmith-in-place) and [jstransformer-handlebars](https://github.com/jstransformers/jstransformer-handlebars) (notice the final `.hbs` extension):
+You can pass metadata to SASS files inside `Metalsmith.source()` through front-matter in the file or global metadata. For example, let's pass metalsmith `theme` metadata to SASS and pre-compile with [@metalsmith/in-place](https://github.com/metalsmith/in-place) and [jstransformer-handlebars](https://github.com/jstransformers/jstransformer-handlebars) (notice the final `.hbs` extension):
 
 `index.scss.hbs`
 

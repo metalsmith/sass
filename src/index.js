@@ -27,7 +27,7 @@ const defaults = {
  */
 function normalizeOptions(options = {}) {
   // make sure entries are not added to defaults on repeat runs
-  const entries = { ...(options.entries || {}) }
+  const entries = Object.assign({}, options.entries || {})
   // force async false, not supported yet
   return Object.assign({}, defaults, options, { async: false, entries })
 }
@@ -87,10 +87,9 @@ function initSass(options) {
           // therefore it is unsafe/error-prone to (re-)read it from disk.
           // SASS doesn't know the file path of the source file (=required for relative imports)
           // so we need to add it & it should be relative to process.cwd (='.')
-          const compileOptions = {
-            ...options,
-            loadPaths: [...options.loadPaths, dirname(relPath(entryKey, '.'))]
-          }
+          const compileOptions = Object.assign({}, options, {
+            loadPaths: [].concat(options.loadPaths, [dirname(relPath(entryKey, '.'))])
+          })
           compiled = sassLib.compileString(files[srcRelPath].contents.toString(), compileOptions)
         } else {
           compiled = sassLib.compile(metalsmith.path(entryKey), options)

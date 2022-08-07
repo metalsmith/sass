@@ -3,7 +3,7 @@
 const assert = require('assert')
 const equals = require('assert-dir-equal')
 const Metalsmith = require('metalsmith')
-const inPlace = require('metalsmith-in-place')
+const inPlace = require('@metalsmith/in-place')
 const { name } = require('../package.json')
 
 /* eslint-disable-next-line node/no-missing-require */
