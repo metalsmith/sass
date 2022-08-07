@@ -53,6 +53,22 @@ function inferEntries(parentDir, filepaths) {
  *
  * @param {Options} options
  * @returns {import('metalsmith').Plugin}
+ * @example
+ * const isDev = process.env.NODE_ENV === 'development'
+ *
+ * // compile all scss/sass files in metalsmith.source()
+ * metalsmith.use(sass()) // defaults
+ *
+ * metalsmith.use(sass({  // explicit defaults
+ *   style:  isDev ? 'expanded' : 'compressed',
+ *   sourceMap: isDev,
+ *   sourceMapIncludeSources: isDev,
+ *   loadPaths: ['node_modules']
+ *   entries: {
+ *     // add scss entry points from
+ *     'lib/outside-source.scss': 'style/inside-source.css'
+ *   }
+ * }))
  */
 function initSass(options) {
   options = normalizeOptions(options)

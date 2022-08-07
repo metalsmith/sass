@@ -30,6 +30,7 @@
     "lib": "lib",
     "test": "test"
   },
+  "types": "lib/index.d.ts",
   "author": "Kevin Van Lierde (https://webketje.com)",
   "license": "LGPL-3.0-or-later",
   "bugs": {
