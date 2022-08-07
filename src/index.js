@@ -1,7 +1,9 @@
-const sassLib = require('sass')
-const debug = require('debug')('@metalsmith/sass')
-const { relative, dirname, extname, basename, join } = require('path')
-const { EOL } = require('os')
+import sassLib from 'sass'
+import createDebug from 'debug'
+import { relative, dirname, extname, basename, join } from 'path'
+import { EOL } from 'os'
+
+const debug = createDebug('@metalsmith/sass')
 const isDev = process.env.NODE_ENV === 'development'
 /**
  * @typedef {import('sass').Options<'sync'>} Options
@@ -147,4 +149,4 @@ function initSass(options) {
   }
 }
 
-module.exports = initSass
+export default initSass

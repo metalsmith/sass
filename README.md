@@ -37,8 +37,8 @@ yarn add @metalsmith/sass
 Pass `@metalsmith/sass` to `metalsmith.use` :
 
 ```js
-const sass = require('@metalsmith/sass')
-const isDev = process.env.NODE_ENV === 'development';
+import sass from '@metalsmith/sass'
+const isDev = process.env.NODE_ENV === 'development'
 
 // compile all scss/sass files in metalsmith.source()
 metalsmith.use(sass()) // defaults
@@ -163,9 +163,11 @@ body {
 Just take care to run the in-place plugin before sass:
 
 ```js
-const Metalsmith = require('metalsmith')
-const inPlace = require('metalsmith-in-place')
-const sass = require('@metalsmith/sass')
+import Metalsmith from 'metalsmith'
+import inPlace from '@metalsmith/in-place'
+import sass from '@metalsmith/sass'
+
+const __dirname = dirname(new URL(import.meta.url).pathname)
 
 Metalsmith(__dirname)
   .metadata({
