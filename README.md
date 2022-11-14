@@ -12,11 +12,11 @@ Compile SASS/SCSS source & lib files to CSS using [dart-sass](https://sass-lang.
 
 ## Features
 
-- Automatically compiles all .scss/.sass files in `Metalsmith.source()`.
-- Automatically removes all `_partial.scss/sass` files from the build after compilation
+- Automatically compiles all .scss/.sass files in `Metalsmith.source()` and removes all `_partial.scss/sass` files from the output.
+- Uses sensible defaults according to `metalsmith.env('NODE_ENV')`.
 - Add files from outside the source dir with the `entries` option. Specify `'relative/to/dir/style.scss': 'relative/to/destination/style.css'` key-value pairs in the `entries` object for all root stylesheets.
 - Provides sourcemaps and access to all advanced [sass options](https://sass-lang.com/documentation/js-api/interfaces/Options) except async.
-- Compatible with [metalsmith-postcss](https://github.com/webketje/metalsmith-postcss)
+- Compatible with [@metalsmith/postcss](https://github.com/metalsmith/postcss) (including sourcemaps)
 
 ## Installation
 
@@ -38,7 +38,7 @@ Pass `@metalsmith/sass` to `metalsmith.use` :
 
 ```js
 import sass from '@metalsmith/sass'
-const isDev = process.env.NODE_ENV === 'development'
+const isDev = metalsmith.env('NODE_ENV') === 'development'
 
 // compile all scss/sass files in metalsmith.source()
 metalsmith.use(sass()) // defaults
@@ -50,12 +50,12 @@ metalsmith.use(sass({  // explicit defaults
   loadPaths: ['node_modules']
   entries: {
     // add scss entry points from
-    'lib/outside-source.scss': 'style/inside-source.css'
+   'lib/outside-source.scss': 'relative/to/dest.css'
   }
 }))
 ```
 
-If `process.env.NODE_ENV` is _explicitly_ set to development,`@metalsmith/sass` will automatically generate sourcemaps and will not minify the output.
+If `metalsmith.env('NODE_ENV')` is _explicitly_ set to development,`@metalsmith/sass` will automatically generate sourcemaps and will not minify the output.
 
 ### Entries
 

@@ -111,6 +111,30 @@ describe('@metalsmith/sass', function () {
       })
   })
 
+  it('should set defaults according to metalsmith.env(\'NODE_ENV\')', function(done) {
+    Metalsmith(fixture('sass-options'))
+      .clean(true)
+      .env('NODE_ENV', 'development')
+      .use(
+        plugin({
+          entries: {
+            'lib/main.scss': 'css/styles.css'
+          }
+        })
+      )
+      .build((err, files) => {
+        if (err) done(err)
+        try {
+          // tests for auto-setting of sourceMap: true and style: expanded
+          assert.deepStrictEqual(Object.keys(files).sort(), ['css/styles.css', 'css/styles.css.map', 'index.html'])
+          assert.strictEqual(files['css/styles.css'].contents.toString().split(/\r*\n/).length, 36)
+          done()
+        } catch (err) {
+          done(err)
+        }
+      })
+  })
+
   it('should support importing node_modules relative paths out of the box', function (done) {
     Metalsmith(fixture('loading_nodemodule'))
       .clean(true)

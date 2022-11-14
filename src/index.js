@@ -2,20 +2,24 @@ import sassLib from 'sass'
 import { relative, dirname, extname, basename, join, normalize } from 'path'
 import { EOL } from 'os'
 
-const isDev = process.env.NODE_ENV === 'development'
 /**
  * @typedef {import('sass').Options<'sync'>} Options
  */
 
-/** @type {Options} */
-const defaults = {
-  // not supported yet, is much slower according to https://sass-lang.com/documentation/js-api/modules#compileAsync
-  async: false,
-  style: isDev ? 'expanded' : 'compressed',
-  sourceMap: isDev,
-  sourceMapIncludeSources: isDev,
-  loadPaths: ['node_modules'],
-  entries: {}
+/**
+ * @param {boolean} isDev
+ * @returns {Options}
+ * */
+function defaults(isDev) {
+  return {
+    // not supported yet, is much slower according to https://sass-lang.com/documentation/js-api/modules#compileAsync
+    async: false,
+    style: isDev ? 'expanded' : 'compressed',
+    sourceMap: isDev,
+    sourceMapIncludeSources: isDev,
+    loadPaths: ['node_modules'],
+    entries: {}
+  }
 }
 
 /**
@@ -23,11 +27,11 @@ const defaults = {
  * @param {Options} [options]
  * @returns {Object}
  */
-function normalizeOptions(options = {}) {
+function normalizeOptions(options = {}, isDev) {
   // make sure entries are not added to defaults on repeat runs
   const entries = Object.assign({}, options.entries || {})
   // force async false, not supported yet
-  return Object.assign({}, defaults, options, { async: false, entries })
+  return Object.assign({}, defaults(isDev), options, { async: false, entries })
 }
 
 /**
@@ -52,7 +56,7 @@ function inferEntries(parentDir, filepaths) {
  * @param {Options} options
  * @returns {import('metalsmith').Plugin}
  * @example
- * const isDev = process.env.NODE_ENV === 'development'
+ * const isDev = metalsmith.env('NODE_ENV') === 'development'
  *
  * // compile all scss/sass files in metalsmith.source()
  * metalsmith.use(sass()) // defaults
@@ -64,14 +68,13 @@ function inferEntries(parentDir, filepaths) {
  *   loadPaths: ['node_modules']
  *   entries: {
  *     // add scss entry points from
- *     'lib/outside-source.scss': 'style/inside-source.css'
+ *     'lib/outside-source.scss': 'relative/to/dest.css'
  *   }
  * }))
  */
 function sass(options) {
-  options = normalizeOptions(options)
-
   return function sass(files, metalsmith, done) {
+    options = normalizeOptions(options, metalsmith.env('NODE_ENV') === 'development')
     const debug = metalsmith.debug('@metalsmith/sass')
 
     function relPath(path, root) {

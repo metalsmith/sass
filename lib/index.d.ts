@@ -21,7 +21,7 @@ export type Options = SassOptions<'sync'> & {
  *   loadPaths: ['node_modules']
  *   entries: {
  *     // add scss entry points from
- *     'lib/outside-source.scss': 'style/inside-source.css'
+ *     'lib/outside-source.scss': 'relative/to/dest.css'
  *   }
  * }))
  */
