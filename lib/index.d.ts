@@ -1,7 +1,7 @@
 import Metalsmith from 'metalsmith';
 import { Options as SassOptions } from 'sass';
 
-export default initSass;
+export default sass;
 export type Options = SassOptions<'sync'> & {
   /** A dictionary of `'ms/dir/source.scss': 'ms/build/output.css ` definitions */
   entries: { [key:string]: string }
@@ -25,4 +25,4 @@ export type Options = SassOptions<'sync'> & {
  *   }
  * }))
  */
-declare function initSass(options: Options): Metalsmith.Plugin;
+declare function sass(options: Options): Metalsmith.Plugin;

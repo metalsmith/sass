@@ -70,7 +70,7 @@ function inferEntries(parentDir, filepaths) {
  *   }
  * }))
  */
-function initSass(options) {
+function sass(options) {
   options = normalizeOptions(options)
 
   return function sass(files, metalsmith, done) {
@@ -165,4 +165,4 @@ function initSass(options) {
   }
 }
 
-export default initSass
+export default sass
