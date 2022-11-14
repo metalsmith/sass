@@ -146,7 +146,7 @@ function initSass(options) {
     })
 
     // cleanup sass partials
-    const sassPartials = metalsmith.match('**/_*.s{c,a}ss')
+    const sassPartials = metalsmith.match('**/_*.s{c,a}ss', Object.keys(files))
     if (sassPartials.length) {
       sassPartials.forEach((path) => {
         delete files[path]
