@@ -3,6 +3,7 @@
 const assert = require('assert')
 const equals = require('assert-dir-equal')
 const Metalsmith = require('metalsmith')
+const normalize = require('path').normalize
 const inPlace = require('@metalsmith/in-place')
 const { name } = require('../package.json')
 
@@ -106,7 +107,7 @@ describe('@metalsmith/sass', function () {
       .process((err, files) => {
         if (err) done(err)
         // unfortunately the dir-equals assertion cannot be used as the SASS map output is not always exactly the same
-        assert.deepStrictEqual(Object.keys(files).sort(), ['css/styles.css', 'css/styles.css.map', 'index.html'])
+        assert.deepStrictEqual(Object.keys(files).sort(), ['css/styles.css', 'css/styles.css.map', 'index.html'].map(normalize))
         done()
       })
   })
@@ -126,8 +127,8 @@ describe('@metalsmith/sass', function () {
         if (err) done(err)
         try {
           // tests for auto-setting of sourceMap: true and style: expanded
-          assert.deepStrictEqual(Object.keys(files).sort(), ['css/styles.css', 'css/styles.css.map', 'index.html'])
-          assert.strictEqual(files['css/styles.css'].contents.toString().split(/\r*\n/).length, 36)
+          assert.deepStrictEqual(Object.keys(files).sort(), ['css/styles.css', 'css/styles.css.map', 'index.html'].map(normalize))
+          assert.strictEqual(files[normalize('css/styles.css')].contents.toString().split(/\r*\n/).length, 36)
           done()
         } catch (err) {
           done(err)
