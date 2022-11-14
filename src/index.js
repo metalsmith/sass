@@ -1,6 +1,6 @@
 import sassLib from 'sass'
 import createDebug from 'debug'
-import { relative, dirname, extname, basename, join } from 'path'
+import { relative, dirname, extname, basename, join, normalize } from 'path'
 import { EOL } from 'os'
 
 const debug = createDebug('@metalsmith/sass')
@@ -94,6 +94,7 @@ function initSass(options) {
     Object.entries(options.entries).forEach(([entryKey, dest]) => {
       const srcRelPath = relPath(entryKey, metalsmith.source())
       const isInSrcDir = Object.prototype.hasOwnProperty.call(files, srcRelPath)
+      dest = normalize(dest)
 
       try {
         let compiled
