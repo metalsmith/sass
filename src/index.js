@@ -1,9 +1,7 @@
 import sassLib from 'sass'
-import createDebug from 'debug'
 import { relative, dirname, extname, basename, join, normalize } from 'path'
 import { EOL } from 'os'
 
-const debug = createDebug('@metalsmith/sass')
 const isDev = process.env.NODE_ENV === 'development'
 /**
  * @typedef {import('sass').Options<'sync'>} Options
@@ -74,6 +72,8 @@ function sass(options) {
   options = normalizeOptions(options)
 
   return function sass(files, metalsmith, done) {
+    const debug = metalsmith.debug('@metalsmith/sass')
+
     function relPath(path, root) {
       return relative(root || metalsmith.directory(), metalsmith.path(path))
     }
@@ -153,14 +153,14 @@ function sass(options) {
       })
       // sass partials are read into memory by the SASS lib,
       // keeping them inside metalsmith.source() creates read overhead
-      debug(
+      debug.warn(
         'Removed %s partials from the build. For better performance, move your SASS partials out of "%s"',
         sassPartials.length,
         metalsmith.source()
       )
     }
 
-    errors.forEach((err) => debug('Sass compilation error: %s', err.message))
+    errors.forEach((err) => debug.error('Sass compilation error: %s', err.message))
     done(errors[0])
   }
 }
