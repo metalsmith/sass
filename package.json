@@ -1,6 +1,6 @@
 {
   "name": "@metalsmith/sass",
-  "version": "1.1.0",
+  "version": "1.2.0",
   "description": "A Metalsmith plugin to compile SASS/SCSS files",
   "keywords": [
     "sass",
