@@ -166,8 +166,10 @@ Just take care to run the in-place plugin before sass:
 import Metalsmith from 'metalsmith'
 import inPlace from '@metalsmith/in-place'
 import sass from '@metalsmith/sass'
+import { fileURLToPath } from 'url'
+import { dirname } from 'path'
 
-const __dirname = dirname(new URL(import.meta.url).pathname)
+const __dirname = dirname(fileURLToPath(import.meta.url))
 
 Metalsmith(__dirname)
   .metadata({
@@ -190,16 +192,8 @@ Metalsmith(__dirname)
 
 To enable debug logs, set the `DEBUG` environment variable to `@metalsmith/sass`:
 
-Linux/Mac:
-
-```
-DEBUG=@metalsmith/sass
-```
-
-Windows:
-
-```
-set "DEBUG=@metalsmith/sass"
+```js
+metalsmith.env('DEBUG', '@metalsmith/sass*')
 ```
 
 Alternatively you can set `DEBUG` to `@metalsmith/*` to debug all Metalsmith core plugins.
@@ -228,7 +222,7 @@ To use this plugin with the Metalsmith CLI, add `@metalsmith/sass` to the `plugi
 
 ## Node compatibility
 
-This plugin runs on Node >= 12. If you need to compile sass/scss on earier Node versions, use the [metalsmith-sass](https://github.com/stevenschobert/metalsmith-sass) which uses the (no longer canonical) lib-sass.
+This plugin runs on Node >= 12. If you need to compile sass/scss on earier Node versions, use [metalsmith-sass](https://github.com/stevenschobert/metalsmith-sass) which uses the (no longer canonical) lib-sass.
 
 ## License
 

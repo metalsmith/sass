@@ -9,7 +9,7 @@ export type Options = SassOptions<'sync'> & {
 /**
  * A Metalsmith plugin to compile SASS/SCSS files
  * @example
- * const isDev = process.env.NODE_ENV === 'development'
+ * const isDev = metalsmith.env('NODE_ENV') === 'development'
  *
  * // compile all scss/sass files in metalsmith.source()
  * metalsmith.use(sass()) // defaults

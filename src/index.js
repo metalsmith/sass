@@ -1,5 +1,5 @@
 import sassLib from 'sass'
-import { relative, dirname, extname, basename, join, normalize } from 'path'
+import { normalize, relative, dirname, extname, basename, join } from 'path'
 import { EOL } from 'os'
 
 /**
@@ -12,8 +12,6 @@ import { EOL } from 'os'
  * */
 function defaults(isDev) {
   return {
-    // not supported yet, is much slower according to https://sass-lang.com/documentation/js-api/modules#compileAsync
-    async: false,
     style: isDev ? 'expanded' : 'compressed',
     sourceMap: isDev,
     sourceMapIncludeSources: isDev,
@@ -30,7 +28,9 @@ function defaults(isDev) {
 function normalizeOptions(options = {}, isDev) {
   // make sure entries are not added to defaults on repeat runs
   const entries = Object.assign({}, options.entries || {})
-  // force async false, not supported yet
+  // force async:false, is much slower according to https://sass-lang.com/documentation/js-api/modules#compileAsync
+  // only benefit is being able to use async plugins
+  // local perf tests on bootstrap 5 SCSS have revealed 3x slower build
   return Object.assign({}, defaults(isDev), options, { async: false, entries })
 }
 
