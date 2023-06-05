@@ -109,12 +109,15 @@ describe('@metalsmith/sass', function () {
       .process((err, files) => {
         if (err) done(err)
         // unfortunately the dir-equals assertion cannot be used as the SASS map output is not always exactly the same
-        assert.deepStrictEqual(Object.keys(files).sort(), ['css/styles.css', 'css/styles.css.map', 'index.html'].map(normalize))
+        assert.deepStrictEqual(
+          Object.keys(files).sort(),
+          ['css/styles.css', 'css/styles.css.map', 'index.html'].map(normalize)
+        )
         done()
       })
   })
 
-  it('should set defaults according to metalsmith.env(\'NODE_ENV\')', function(done) {
+  it("should set defaults according to metalsmith.env('NODE_ENV')", function (done) {
     Metalsmith(fixture('sass-options'))
       .clean(true)
       .env('NODE_ENV', 'development')
@@ -129,7 +132,10 @@ describe('@metalsmith/sass', function () {
         if (err) done(err)
         try {
           // tests for auto-setting of sourceMap: true and style: expanded
-          assert.deepStrictEqual(Object.keys(files).sort(), ['css/styles.css', 'css/styles.css.map', 'index.html'].map(normalize))
+          assert.deepStrictEqual(
+            Object.keys(files).sort(),
+            ['css/styles.css', 'css/styles.css.map', 'index.html'].map(normalize)
+          )
           assert.strictEqual(files[normalize('css/styles.css')].contents.toString().split(/\r*\n/).length, 36)
           done()
         } catch (err) {
@@ -225,8 +231,7 @@ describe('@metalsmith/sass', function () {
         assert.strictEqual(err instanceof Error, true)
         assert.strictEqual(
           err.message,
-          join('test', 'fixtures', 'invalid-scss', 'lib', 'inexistant.scss') +
-            ': no such file or directory'
+          join('test', 'fixtures', 'invalid-scss', 'lib', 'inexistant.scss') + ': no such file or directory'
         )
         done()
       })
