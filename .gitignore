@@ -6,4 +6,5 @@ coverage
 coverage.info
 test/fixtures/*/build
 node_modules
-lib/index.*js
+lib
+!lib/*.d.ts
