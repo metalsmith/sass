@@ -43,6 +43,7 @@
     "@metalsmith/in-place": "^4.6.0",
     "assert-dir-equal": "^1.1.0",
     "auto-changelog": "^2.4.0",
+    "c8": "^7.14.0",
     "eslint": "^8.36.0",
     "eslint-config-prettier": "^8.7.0",
     "eslint-plugin-import": "^2.27.5",
@@ -50,9 +51,8 @@
     "jstransformer-handlebars": "^1.2.0",
     "metalsmith": "^2.5.0",
     "microbundle": "^0.15.1",
-    "mocha": "^9.2.2",
+    "mocha": "^10.2.0",
     "node_module_sass": "./test/fixtures/loading_nodemodule/lib/node_module_sass",
-    "nyc": "^15.1.0",
     "pettier": "^1.1.0",
     "prettier": "^2.8.3",
     "release-it": "^15.9.0"
@@ -62,7 +62,7 @@
   },
   "scripts": {
     "changelog": "auto-changelog -u --commit-limit false --ignore-commit-pattern '^((dev|chore|ci):|Release)'",
-    "coverage": "nyc report --reporter=text-lcov > ./coverage.info",
+    "coverage": "npm test && c8 report --reporter=text-lcov > ./coverage.info",
     "format": "prettier --write \"**/*.{yml,md,js,json}\"",
     "format:check": "prettier --list-different \"**/*.{yml,md,js,json}\"",
     "lint": "eslint --fix .",
@@ -70,7 +70,7 @@
     "release": "release-it .",
     "build": "microbundle --target node --no-sourcemap -f cjs,esm --strict --generateTypes=false",
     "pretest": "npm run build",
-    "test": "nyc mocha -t 5000"
+    "test": "c8 mocha -t 5000"
   },
   "engines": {
     "node": ">=12"
