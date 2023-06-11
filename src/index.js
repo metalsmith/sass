@@ -1,4 +1,4 @@
-import sassLib from 'sass'
+import * as sassLib from 'sass'
 import { normalize, relative, dirname, extname, basename, join } from 'path'
 import { EOL } from 'os'
 
