@@ -191,7 +191,7 @@ describe('@metalsmith/sass', function () {
           }
         }
       })
-      .use(inPlace())
+      .use(inPlace({ transform: 'handlebars' }))
       .use(plugin())
       .build((err) => {
         assert.strictEqual(err, null)
