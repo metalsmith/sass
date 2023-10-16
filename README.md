@@ -128,7 +128,7 @@ build
 
 ### @import/ @use partials
 
-Sass partials are processed by [dart-sass](https://sass-lang.com/dart-sass). @metalsmith/sass will gracefully handle in-source partials, but they will be read into memory by Metalsmith. If you don't need to preprocess sass partials with any other metalsmith plugin it is _better to store partials outside the source directory_, eg:
+Sass partials are processed by [dart-sass](https://sass-lang.com/dart-sass). @metalsmith/sass will gracefully handle in-source partials, but they will be read into memory by Metalsmith. If you don't need to preprocess sass partials with any other metalsmith plugin you can save some disk reads by _storing partials outside the source directory_, eg:
 
 ```plaintext
 my-blog
@@ -180,7 +180,7 @@ Metalsmith(__dirname)
       }
     }
   })
-  .use(inPlace())
+  .use(inPlace('jstransformer-handlebars'))
   .use(sass())
   .build((err) => {
     if (err) throw err
@@ -190,7 +190,7 @@ Metalsmith(__dirname)
 
 ### Debug
 
-To enable debug logs, set the `DEBUG` environment variable to `@metalsmith/sass`:
+To enable debug logs, set the `DEBUG` environment variable to `@metalsmith/sass*`:
 
 ```js
 metalsmith.env('DEBUG', '@metalsmith/sass*')
