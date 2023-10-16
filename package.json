@@ -44,18 +44,18 @@
     "assert-dir-equal": "^1.1.0",
     "auto-changelog": "^2.4.0",
     "c8": "^8.0.1",
-    "eslint": "^8.47.0",
+    "eslint": "^8.51.0",
     "eslint-config-prettier": "^9.0.0",
     "eslint-plugin-import": "^2.28.1",
-    "eslint-plugin-n": "^16.0.1",
+    "eslint-plugin-n": "^16.2.0",
     "jstransformer-handlebars": "^1.2.0",
     "metalsmith": "^2.6.1",
     "microbundle": "^0.15.1",
     "mocha": "^10.2.0",
     "node_module_sass": "./test/fixtures/loading_nodemodule/lib/node_module_sass",
     "pettier": "^1.1.0",
-    "prettier": "^3.0.2",
-    "release-it": "^16.1.5"
+    "prettier": "^3.0.3",
+    "release-it": "^16.2.1"
   },
   "peerDependencies": {
     "metalsmith": "^2.5.0"
