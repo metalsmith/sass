@@ -222,7 +222,7 @@ To use this plugin with the Metalsmith CLI, add `@metalsmith/sass` to the `plugi
 
 ## Node compatibility
 
-This plugin runs on Node >= 14.14.0. If you need to compile sass/scss on earier Node versions, use [metalsmith-sass](https://github.com/stevenschobert/metalsmith-sass) which uses the (no longer canonical) lib-sass.
+This plugin runs on Node >= 14.18.0. If you need to compile sass/scss on earier Node versions, use [metalsmith-sass](https://github.com/stevenschobert/metalsmith-sass) which uses the (no longer canonical) lib-sass.
 
 ## License
 
