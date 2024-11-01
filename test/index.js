@@ -1,5 +1,3 @@
-/* eslint-env node, mocha */
-
 import assert from 'node:assert'
 import { normalize, resolve, dirname, join } from 'node:path'
 import { readFileSync } from 'node:fs'
