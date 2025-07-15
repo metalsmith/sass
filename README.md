@@ -180,7 +180,7 @@ Metalsmith(__dirname)
       }
     }
   })
-  .use(inPlace('jstransformer-handlebars'))
+  .use(inPlace({ transform: 'handlebars' }))
   .use(sass())
   .build((err) => {
     if (err) throw err
