@@ -74,7 +74,7 @@
     "test": "c8 mocha -t 5000"
   },
   "engines": {
-    "node": ">=14.18.0"
+    "node": ">=16"
   },
   "publishConfig": {
     "access": "public"
