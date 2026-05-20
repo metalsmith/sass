@@ -37,7 +37,7 @@
   },
   "homepage": "https://github.com/metalsmith/sass#readme",
   "dependencies": {
-    "sass": "^1.97.1"
+    "sass": "^1.99.0"
   },
   "devDependencies": {
     "@metalsmith/in-place": "^5.0.0",
