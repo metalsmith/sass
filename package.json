@@ -42,21 +42,21 @@
   "devDependencies": {
     "@metalsmith/in-place": "^5.0.0",
     "assert-dir-equal": "^1.1.0",
-    "auto-changelog": "^2.5.0",
+    "auto-changelog": "^2.5.1",
     "c8": "^10.1.3",
-    "eslint": "^9.39.2",
+    "eslint": "^9.39.4",
     "eslint-config-prettier": "^10.1.8",
     "eslint-plugin-import": "^2.32.0",
-    "eslint-plugin-n": "^17.23.1",
-    "globals": "^17.0.0",
+    "eslint-plugin-n": "^18.0.1",
+    "globals": "^17.6.0",
     "jstransformer-handlebars": "^1.2.0",
-    "metalsmith": "^2.6.3",
+    "metalsmith": "^2.7.0",
     "microbundle": "^0.15.1",
     "mocha": "^11.7.5",
     "node_module_sass": "./test/fixtures/loading_nodemodule/lib/node_module_sass",
     "pettier": "^1.1.0",
-    "prettier": "^3.7.4",
-    "release-it": "^19.2.2"
+    "prettier": "^3.8.3",
+    "release-it": "^20.0.1"
   },
   "peerDependencies": {
     "metalsmith": "^2.5.0"
